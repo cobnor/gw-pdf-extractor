@@ -42,7 +42,8 @@ def extract_relevant_text(nlp, question, content, min_length=100, chunk_size=512
     print(best_chunk)
     # Extend the answer if it"s too short
     if best_chunk and len(best_answer) < min_length:
-        start_index = max(0, best_start - min_length/2)  # Expand slightly before the answer
+        # Expand slightly before and slightly after
+        start_index = max(0, best_start - min_length/2)
         end_index = min(len(best_chunk), best_start + len(best_answer) + min_length/2)
         best_answer = best_chunk[start_index:end_index]
     
@@ -94,23 +95,28 @@ def summarize(filename, writeFile=False):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=100)
     chunks = text_splitter.split_text(content)
 
+    # QA on each question
     for question in questions:
         print(question)
         best_answer = None
         best_score = 0
 
+        # QA on each chunk
         for chunk in chunks:
             output = qa_nlp(question=question, context=chunk)
+            # Only record the best scoring response from all the chunks
             if output["score"] > best_score:
                 best_answer = output["answer"]
                 best_score = output["score"]
 
         print("answer:" + best_answer + ", score:", best_score)
 
+        # Must have a score over 0.5. If score below 0.5, assume answer not in text and do sentiment analysis
         if best_score > 0.5:
             ans[question] = best_answer
-            
+        # Sentiment analysis
         else:
+            # Find text relevant to question that's over a given length
             relevant = extract_relevant_text(qa_nlp, question, content)
             print("\n--------------\n",relevant,"\n--------------\n")
             if relevant:
@@ -118,6 +124,7 @@ def summarize(filename, writeFile=False):
                 sentiment = sentiment_result[0]["label"]
                 sentiment_score = sentiment_result[0]["score"]
             else:
+                # If no relevant text can be found of sufficient length
                 sentiment = "NONE"
                 sentiment_score = 0
             ans[question] = f"{sentiment} (score: {sentiment_score:.2f})"
