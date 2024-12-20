@@ -1,0 +1,20 @@
+What is the numerical value of Net Emissions?
+What percentage % of their energy comes from renewable sources?
+What percentage % of their waste is recycled?
+What is their net water usage per year (cubic metres/year)?
+What is the net amount of deforestation caused in hectares?
+How many sustainability initiatives have been taken?
+Does this company have a certification presence?
+What is this company's certification type?
+What is the validity of this company's certification?
+What is the social media sentiment?
+What is the average rating of customer reviews?
+How many media mentions?
+What is the compliance rating?
+How many violations have occurred?
+What is the net fine amount ($)?
+What is the controversy type?
+What is the severity of controversy?
+What is the ESG Investment Attractiveness Score?
+What was the impact on stock price (%)?
+Has greenwashing occurred?
